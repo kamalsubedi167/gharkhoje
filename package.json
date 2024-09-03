@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "npm-run-all": "^4.1.5"
+  },
+  "name": "gharkhoje",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npm-run-all -l -p frontend backend",
+    "frontend": "(npm --prefix ./frontend run dev)",
+    "backend": " (npm --prefix ./backend run dev)"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gaurav01-05/gharkhoje.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gaurav01-05/gharkhoje/issues"
+  },
+  "homepage": "https://github.com/gaurav01-05/gharkhoje#readme",
+  "description": ""
+}
