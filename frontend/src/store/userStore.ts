@@ -2,18 +2,28 @@ import { useState } from "react";
 import { create } from "zustand";
 
 interface UserInterface{
-    token:string|null,
-    setToken:(token:string)=>void,
+    token:string|null|undefined,
+    setToken:(token:string|null|undefined)=>void,
     id:string|null,
-    setId:(id:string)=>void,
+    setId:(id:string|null)=>void,
 }
 
 function storeTokenToLocal(token:string){
-    localStorage.setItem("token",token);
+    if(token==null){
+        localStorage.removeItem('token');
+    }
+    else{
+        localStorage.setItem("token",token);
+    }
 }
 
 function storeIDToLocal(id:string){
-    localStorage.setItem("id",id);
+    if(id==null){
+        localStorage.removeItem('id');
+    }
+    else{
+        localStorage.setItem("id",id);
+    }
 }
 
 function readToken(){

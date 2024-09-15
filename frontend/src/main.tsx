@@ -5,18 +5,26 @@ import App from './App';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import Home from './components/home/Home';
-import ViewProperty from './components/property/ViewProperty';
-import Profile from './components/profile/Profile';
+import PropertyList from './components/property/MyPropertyList';
+import PropertyDetail from './components/singlePage/PropertyListingPage';
+import ChatApp from './components/messages/ChatApp';
+import ChatBox from './components/messages/ChatBox';//imp
+import { ApiProvider } from '@reduxjs/toolkit/query/react';
+import { api } from './api/apiSlice';
+import AddProperty from './components/AddProperty/PropertyListingForm';
+import AdminPanel from './components/Admin/adminpannel';
+import ProfilePage from './components/ProfilePage/ProfilePage';
+import Test from './components/messages/textbox';
 
-// import {} from 'react-router'
 
 
 const router = createBrowserRouter([
     {
         path:'/',
         element:<App/>,
-        errorElement:<div>Route not found</div>,
+        errorElement:<div>Route Not Found</div>,
         children:[
+
             {
                 path:'/',
                 element:<Home/>
@@ -31,18 +39,45 @@ const router = createBrowserRouter([
             },
             {
                 path:'/property/:id',
-                element:<ViewProperty/>
+                element:<PropertyDetail/>
             },
             {
                 path:'/profile/:id?',
-                element:<Profile/>
+                element:<ProfilePage/>
             },
+            {
+                path:'/Properties',
+                element:<PropertyList/>
+           },
+            {
+                path:'/adminpannel/:id?',
+                element:<AdminPanel/>
+            },
+            {
+                path:'/addproperty/:id?',
+                element:<AddProperty/>
+            },
+            {
+                path:'/messages',
+                element:<ChatApp/>,
+                children:[
+                    {
+                        path:':id',
+                        element:<Test/>
+                    },
+                ]
+            },
+           
         ]
+        
     },
     
 ]);
 
 createRoot(document.getElementById('root')!).render(
+
+    <ApiProvider api={api}>
     <RouterProvider router={router}/>
+    </ApiProvider>
 )
 

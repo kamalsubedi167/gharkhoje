@@ -1,50 +1,36 @@
 import { Link, useNavigate } from "react-router-dom"
 import { Button } from "../ui/button"
 import { Input } from "../ui/input"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import axios, { AxiosError, AxiosResponse } from "axios"
 import { API_HOST } from "@/configs/constants"
 import { toast } from "react-toastify"
 import { userStore } from "@/store/userStore"
+import { LoginRequest, useLoginMutation } from "@/api/apiSlice"
 
-interface LoginForm{
-  email:string,
-  password:string
-}
+
 
 function Login() {
 
-  const [data,setData] = useState<LoginForm>({email:"",password:""});
-  const [loading,setLoading] = useState(false);
+  const [data,setData] = useState<LoginRequest>({email:"",password:""});
   const {setId,setToken} = userStore()
+
+  const [login,{isError,isSuccess,isLoading,data:loginResponse,error}] = useLoginMutation();
   const navigate = useNavigate();
 
-  
-  async function submit(e:any){
-    e.preventDefault();
-    setLoading(true);
+  useEffect(()=>{
 
-    
-    
-    try{
-        const res = await axios.post(API_HOST+"/auth/login",data,{headers:{'Content-Type':'application/json'}});
-        const {token,id} = res.data;
-        setToken(token);
-        setId(id);
-        
-        toast.success("User is logined successfully");
-        navigate("/");
-        
-      }catch(e){
-      const res = (e as AxiosError).response as AxiosResponse;
-      const {message} = res.data;
-      toast.error(message);
-
+    if(isError){
+      toast.error(error.data.message);
     }
-    setLoading(false);
+    if(isSuccess){
+      // alert("hello")
+      setId(loginResponse.id);
+      setToken(loginResponse?.token);
+      navigate('/');
+    }
 
-  }
-
+  },[error,loginResponse,isSuccess]);
 
   return (
     <div className="w-full h-full flex justify-center items-center">
@@ -58,7 +44,7 @@ function Login() {
                 <Input value={data.password} onChange={(e)=>setData({...data,password:e.target.value})} className="w-full " type="password" placeholder="Enter your password"/>
                 <Link className="self-start text-xs text-blue-500" to="#">Forgot Password?</Link>
             
-                <Button disabled={loading} onClick={(e)=>submit(e)} className="" variant={'submit'}>Login</Button>
+                <Button disabled={isLoading} onClick={(e)=>login({email:data.email,password:data.password})} className="" variant={'submit'}>Login</Button>
 
 
                 <Link className=" text-xs text-blue-500" to="/register">Dont have account,Register here?</Link>

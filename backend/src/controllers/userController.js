@@ -2,13 +2,21 @@ import { PrismaClient } from "@prisma/client"
 
 
 const getUser =async (req,res)=>{
-    const prisma = new PrismaClient();
-    const id = req.userId;
-    console.log(id);
-    const user =await prisma.user.findUnique({where:{id}});
+    var {id}= req.params
 
-    return res.json({id:user.id,name:user.name,email:user.email});
+    const prisma = new PrismaClient();
+    if(!id){
+     id = req.userId;
+        
+    }
+    const user =await prisma.user.findUnique({where:{id}});
+    const userProfile = await prisma.userProfile.findFirst({where:{userId:id}})
+    if(user &&  userProfile)
+        user.profile =userProfile
+    else return res.json([])
+
+    return res.json(user);
 }
 
 
-export {getUser};
+export {getUser}; 

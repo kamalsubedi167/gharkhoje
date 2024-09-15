@@ -20,3 +20,66 @@ model User {
   name    String
   password String
 }
+
+
+
+model Message {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  sender      String   // This could be a reference to a User model if using a relational DB
+  receiver    String   // This could be a reference to a User model if using a relational DB
+  text        String   @default("")
+  isMedia     Boolean  @default(false)
+  mediaUrl    String   @default("")
+  timestamp   DateTime @default(now())
+}
+// 5 gate ( after santosh)
+//++++++++========++++++++++++==========++++++++
+//++++++++==========++++++++===========+++++++==
+
+
+// Define the enum for listing types
+enum ListingType {
+  RENT
+  SELL
+}
+
+enum ListingStatus {
+  ACTIVE
+  PENDING
+  REJECTED
+}
+
+model Listing {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String   // Use Text type for potentially longer descriptions
+  address     String
+  type        ListingType // Use an enum for predefined listing types
+  parkingSpot Boolean
+  furnished   Boolean
+  beds        Int
+  baths       Int
+  price       Float
+  userId      String
+  status      ListingStatus @default(PENDING)   
+  photos      String[]  // Array of URLs or file paths
+  createdAt   DateTime @default(now()) @map("created_at") // Track creation time
+  updatedAt   DateTime @updatedAt @map("updated_at") // Track last update time
+}
+
+// UseraProfile schema 
+model UserProfile {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  userId        String  @unique
+  about         String?
+  avatarUrl     String @default("")
+  address       String?
+  occupation    String?
+  familyStatus  String?
+  email         String   @unique
+  dateOfBirth   String
+  gender        String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt 
+}
