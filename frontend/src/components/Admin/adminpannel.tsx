@@ -11,6 +11,7 @@ import {
   useGetUserQuery
 } from '@/api/apiSlice'; // Import hooks from your API service
 import { useNavigate } from 'react-router-dom';
+import { userStore } from '@/store/userStore';
 
 interface User {
   id: string;
@@ -38,6 +39,9 @@ const AdminPanel: React.FC = () => {
   const [deleteUser] = useDeleteUserMutation();
 
   const navigate = useNavigate();
+
+  const {id:logined_id} = userStore();
+  if(logined_id!="66e5f15cd5216ac877578451") return <div>You dont have permission to access this resource</div> 
   // Function to handle listing review
   const reviewListing = (id: string) => {
     navigate("/property/"+id)

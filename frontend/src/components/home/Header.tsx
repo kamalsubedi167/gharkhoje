@@ -1,6 +1,7 @@
 import { userStore } from '@/store/userStore';
 import { Cat, MailOpen, PlusIcon, Search, HomeIcon, } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import logo from '../../assets/file(1).png'
 
 
 const Header = () => {
@@ -11,7 +12,7 @@ const Header = () => {
 
     <header className="bg-white text-black py-4 px-6 flex justify-between items-center">
       <div className="flex items-center gap-3">
-        <Link to={'/'}><Cat size={24} className="text-gray-500 hover:text-white cursor-pointer" /> </Link>
+        <Link to={'/'}> <img src={logo}  size={24} className="text-gray-500 w-20 hover:text-white cursor-pointer" /> </Link>
         <Link to={'/'}>  <span className="text-xl text-indigo-700 font-bold">GharKhoje</span></Link>
       </div>
 
